@@ -3,29 +3,50 @@ import { createSlice } from "@reduxjs/toolkit";
 export let bookMark = createSlice({
   name: "bookMark",
   initialState: [
-    { category: "redux", list: [{ title: "redux 정의", url: "url" }] },
-    { category: "html", list: [{ title: "html 정의", url: "url" }] },
+    { category: "redux", list: [{ title: "redux 정의", url: "asd" }] },
+    { category: "html", list: [{ title: "html 정의", url: "fgh" }] },
   ],
   reducers: {
     addBookMark(state, action) {
+      let index = state.findIndex((a) => a.category === action.payload.category);
+      if (index !== -1) return;
       state.push(action.payload);
     },
-  },
-});
-
-export let { addBookMark } = bookMark.actions;
-
-export let isAdd = createSlice({
-  name: "isAdd",
-  initialState: true,
-  reducers: {
-    isAddChange(state, action) {
+    addList(state, action) {
+      let index = state.findIndex((a) => a.category === action.payload.category);
+      console.log(index);
+      state[index].list.push(action.payload.list);
+    },
+    removeList(state, action) {
+      let categoryIndex = state.findIndex((item) => item.category === action.payload.category);
+      let titleIndex = state[categoryIndex].list.findIndex((item) => item.title === action.payload.title);
+      state[categoryIndex].list.splice(titleIndex, 1);
+    },
+    changeList(state, action) {
+      let categoryIndex = state.findIndex((item) => item.category === action.payload.category);
+      let titleIndex = state[categoryIndex].list.findIndex((item) => item.title === action.payload.title);
+      state[categoryIndex].list[titleIndex].title = action.payload.newTitle;
+      state[categoryIndex].list[titleIndex].url = action.payload.newUrl;
+    },
+    copyLocalStorage(state, action) {
       return action.payload;
     },
   },
 });
 
-export let { isAddChange } = isAdd.actions;
+export let { addBookMark, addList, removeList, changeList, copyLocalStorage } = bookMark.actions;
+
+export let mode = createSlice({
+  name: "mode",
+  initialState: "create",
+  reducers: {
+    modeChange(state, action) {
+      return action.payload;
+    },
+  },
+});
+
+export let { modeChange } = mode.actions;
 
 export let category = createSlice({
   name: "category",
@@ -62,3 +83,16 @@ export let textArea = createSlice({
 });
 
 export let { changeTextArea } = textArea.actions;
+
+export let prevList = createSlice({
+  name: "prevList",
+  initialState: [{ category: "", title: "" }],
+  reducers: {
+    copyList(state, action) {
+      console.log(action.payload);
+      return action.payload;
+    },
+  },
+});
+
+export let { copyList } = prevList.actions;
