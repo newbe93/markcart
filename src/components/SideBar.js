@@ -6,20 +6,16 @@ function SideBar() {
   let dispatch = useDispatch();
   let state = useSelector((state) => state);
   let options = state.bookMark;
-  // useEffect(() => {
-  //   localStorage.setItem("bookMark", JSON.stringify(state.bookMark));
-  // }, [state.bookMark]);
+  function clearAll() {
+    dispatch(changeCategory(""));
+    dispatch(changeTitle(""));
+    dispatch(changeTextArea(""));
+  }
   function btnHandle() {
     if (state.mode === "create") {
       if (state.category === "" || state.title === "" || state.textArea === "") return;
       dispatch(addBookMark({ category: state.category, list: [{ title: state.title, url: state.textArea }] }));
-      // localStorage.setItem("bookMark", JSON.stringify(state.bookMark));
-      // let bookmark = JSON.parse(localStorage.getItem("bookMark"));
-      // bookmark.push({ category: state.category, list: [{ title: state.title, url: state.textArea }] });
-      // localStorage.setItem("bookMark", JSON.stringify(bookmark));
-      dispatch(changeCategory(""));
-      dispatch(changeTitle(""));
-      dispatch(changeTextArea(""));
+      clearAll();
     } else {
       if (state.category === "" || state.title === "" || state.textArea === "") return;
       dispatch(addList({ category: state.category, list: { title: state.title, url: state.textArea } }));
@@ -35,9 +31,7 @@ function SideBar() {
         <h5 className="side-bar-title">북마크 추가하기</h5>
         <select
           onChange={(e) => {
-            dispatch(changeCategory(""));
-            dispatch(changeTitle(""));
-            dispatch(changeTextArea(""));
+            clearAll();
             if (e.target.value === "") {
               dispatch(modeChange("create"));
             } else {
@@ -122,9 +116,7 @@ function SideBar() {
                     dispatch(removeList({ category: state.category, title: state.title }));
                     localStorage.setItem("bookMark", JSON.stringify(state.bookMark));
                     dispatch(modeChange("create"));
-                    dispatch(changeCategory(""));
-                    dispatch(changeTitle(""));
-                    dispatch(changeTextArea(""));
+                    clearAll();
                   }}
                 >
                   삭제
@@ -136,9 +128,7 @@ function SideBar() {
                     dispatch(copyList([{ category: state.category, title: state.title }]));
                     localStorage.setItem("bookMark", JSON.stringify(state.bookMark));
                     dispatch(modeChange("create"));
-                    dispatch(changeCategory(""));
-                    dispatch(changeTitle(""));
-                    dispatch(changeTextArea(""));
+                    clearAll();
                   }}
                 >
                   수정

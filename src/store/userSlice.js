@@ -96,3 +96,39 @@ export let prevList = createSlice({
 });
 
 export let { copyList } = prevList.actions;
+
+export let searchValue = createSlice({
+  name: "searchValue",
+  initialState: "",
+  reducers: {
+    changevalue(state, action) {
+      return action.payload;
+    },
+  },
+});
+
+export let { changevalue } = searchValue.actions;
+
+export let searchBookMark = createSlice({
+  name: "searchBookMark",
+  initialState: [],
+  reducers: {
+    searchList(state, action) {
+      state.push({ category: action.payload.category, list: action.payload.list });
+    },
+  },
+});
+
+export let { searchList } = searchBookMark.actions;
+
+export let isSearch = createSlice({
+  name: "isSearch",
+  initialState: false,
+  reducers: {
+    searchMode(state, action) {
+      return action.payload;
+    },
+  },
+});
+
+export let { searchMode } = isSearch.actions;
